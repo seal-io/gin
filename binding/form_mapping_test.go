@@ -53,7 +53,7 @@ func TestMappingBaseTypes(t *testing.T) {
 
 		field := val.Elem().Type().Field(0)
 
-		_, err := mapping(val, emptyField, formSource{field.Name: {tt.form}}, "form")
+		_, err := mapping(map[string]struct{}{}, val, emptyField, formSource{field.Name: {tt.form}}, "form")
 		assert.NoError(t, err, testName)
 
 		actual := val.Elem().Field(0).Interface()
@@ -154,7 +154,7 @@ func TestMappingURICompositeTypes(t *testing.T) {
 
 		field := val.Elem().Type().Field(0)
 
-		_, err := mapping(val, emptyField, formSource{field.Name: {tt.uri}}, "uri")
+		_, err := mapping(map[string]struct{}{}, val, emptyField, formSource{field.Name: {tt.uri}}, "uri")
 		assert.NoError(t, err, testName)
 
 		actual := val.Elem().Field(0).Interface()
