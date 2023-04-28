@@ -80,8 +80,12 @@ func mappingByPtr(ptr any, setter setter, tag string) error {
 }
 
 func mapping(value reflect.Value, field reflect.StructField, setter setter, tag string, deepth int) (bool, error) {
-	if field.Tag.Get(tag) == "-" { // just ignoring this field
-		return false, nil
+	if field.Name != "" {
+		// ignore the field that not owned by the given tag,
+		// or declared with a "-" symbol.
+		if v, exist := field.Tag.Lookup(tag); !exist || v == "-" {
+			return false, nil
+		}
 	}
 	if deepth >= 1000 {
 		// avoid causing stackoverflow.

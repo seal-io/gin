@@ -298,3 +298,15 @@ func TestMappingIgnoredCircularRef(t *testing.T) {
 	err := mappingByPtr(&s, formSource{}, "form")
 	assert.NoError(t, err)
 }
+
+func TestMappingCircularRefOnOtherTag(t *testing.T) {
+	type S struct {
+		S *S     `json:"s"`
+		O string `uri:"o"`
+	}
+	var s S
+
+	err := mappingByPtr(&s, formSource{"o": []string{"x"}}, "uri")
+	assert.Equal(t, "x", s.O)
+	assert.NoError(t, err)
+}
